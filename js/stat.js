@@ -15,9 +15,9 @@ const GAP = 50;
 
 const COLUMN_WIDTH = 40;
 const COLUMN_MAX_HEIGHT = 150;
-const COLUMN_COLORS = [`#FC0D1B`, `#020E86`, `#9999A1`, `#666780`];
 
 const PLAYER_COLOR = `rgba(255, 0, 0, 1)`;
+const DEFAULT_COLOR = `rgba(2, 14, 134, 1)`;
 const TEXT_HEADING = `Ура вы победили!`;
 const TEXT_SUBHEADING = `Список результатов:`;
 
@@ -28,11 +28,14 @@ const FONT = {
   GAP: 20
 };
 
-
-let roundTimes = (times) => {
-  times.forEach((value) => {
-    value.Math.round;
-  });
+let getColors = (length) => {
+  let colors = [];
+  colors.push(PLAYER_COLOR);
+  for (let i = 0; i < length - 1; i++) {
+    let color = DEFAULT_COLOR.slice(0, -2) + Math.random().toFixed(1) + `)`;
+    colors.push(color);
+  }
+  return colors;
 };
 
 let isPlayer = (element) => {
@@ -41,29 +44,29 @@ let isPlayer = (element) => {
 
 let getPlayerIndex = (array) => {
   return array.findIndex(isPlayer);
-}
+};
 
 let swapElements = (firstIndex, secondIndex, array) => {
   let temp = array[firstIndex];
   array[firstIndex] = array[secondIndex];
   array[secondIndex] = temp;
-}
+};
 
 let roundArray = (array) => {
-  for (var i = 0; i < array.length; i++) {
+  for (let i = 0; i < array.length; i++) {
     array[i] = Math.round(array[i]);
   }
 };
 
 let getMaxValue = (array) => {
   let maxValue = array[0];
-  array.forEach((item, i) => {
+  array.forEach((item) => {
     if (item > maxValue) {
-      (maxValue = item)
+      maxValue = item;
     }
   });
   return maxValue;
-}
+};
 
 let getColumnHeightPx = (height) => {
   let maxHeightPx = COLUMN_MAX_HEIGHT / getMaxValue(height);
@@ -71,8 +74,8 @@ let getColumnHeightPx = (height) => {
   height.forEach((item) => {
     relativeHeight.push(item * maxHeightPx);
   });
-  return relativeHeight
-}
+  return relativeHeight;
+};
 
 let getColumnX = (times) => {
   let array = [];
@@ -80,7 +83,7 @@ let getColumnX = (times) => {
     array.push(CLOUD_X + PADDING + i * (COLUMN_WIDTH + GAP));
   });
   return array;
-}
+};
 
 let getColumnY = (heightPx) => {
   let array = [];
@@ -88,8 +91,8 @@ let getColumnY = (heightPx) => {
   heightPx.forEach((item) => {
     array.push(maxRelativeHeight - item + PADDING + FONT.GAP + FONT.GAP + PADDING + PADDING);
   });
-  return array
-}
+  return array;
+};
 
 let renderRect = (ctx, x, y, width, height, color) => {
   ctx.fillStyle = color;
@@ -97,7 +100,7 @@ let renderRect = (ctx, x, y, width, height, color) => {
 };
 
 let renderChart = (ctx, x, y, height, colors) => {
-  for (var i = 0; i < height.length; i++) {
+  for (let i = 0; i < height.length; i++) {
     renderRect(ctx, x[i], y[i], COLUMN_WIDTH, height[i], colors[i]);
   }
 };
@@ -110,35 +113,36 @@ let renderText = (ctx, x, y, font, text) => {
 };
 
 let renderNames = (ctx, x, names, font) => {
-  for (var i = 0; i < names.length; i++) {
+  for (let i = 0; i < names.length; i++) {
     renderText(ctx, x[i], CLOUD_HEIGHT - PADDING / 2, font, names[i]);
   }
 };
 
 let renderTimes = (ctx, x, y, times, font) => {
-  for (var i = 0; i < times.length; i++) {
+  for (let i = 0; i < times.length; i++) {
     renderText(ctx, x[i], y[i] - FONT.GAP, font, times[i]);
   }
 };
 
 window.renderStatistics = (ctx, names, times) => {
   const playerIndex = getPlayerIndex(names);
+  let colors = getColors(names.length);
+
+  swapElements(0, playerIndex, times);
+  swapElements(0, playerIndex, names);
 
   let columnHeightPx = getColumnHeightPx(times);
   let columnX = getColumnX(times);
   let columnY = getColumnY(columnHeightPx);
 
-  swapElements(0, playerIndex, times);
-  swapElements(0, playerIndex, names);
-
   roundArray(columnHeightPx);
   roundArray(times);
 
-  renderRect(ctx, CLOUD_SHADOW_X, CLOUD_SHADOW_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_SHADOW_COLOR);  /* рисуем тень*/
-  renderRect(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_COLOR);  /* рисуем облако */
+  renderRect(ctx, CLOUD_SHADOW_X, CLOUD_SHADOW_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_SHADOW_COLOR); /* рисуем тень*/
+  renderRect(ctx, CLOUD_X, CLOUD_Y, CLOUD_WIDTH, CLOUD_HEIGHT, CLOUD_COLOR); /* рисуем облако */
   renderText(ctx, CLOUD_X + PADDING, CLOUD_Y + PADDING, FONT, TEXT_HEADING); /* пишем заголовок */
   renderText(ctx, CLOUD_X + PADDING, CLOUD_Y + PADDING + FONT.GAP, FONT, TEXT_SUBHEADING); /* пишем подзаголовок */
-  renderChart(ctx, columnX, columnY, columnHeightPx, COLUMN_COLORS); /* отрисовываем графики */
+  renderChart(ctx, columnX, columnY, columnHeightPx, colors); /* отрисовываем графики */
   renderNames(ctx, columnX, names, FONT); /* пишем имена */
   renderTimes(ctx, columnX, columnY, times, FONT); /* пишем результаты числами */
 };
