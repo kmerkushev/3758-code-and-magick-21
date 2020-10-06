@@ -16,8 +16,8 @@ const GAP = 50;
 const COLUMN_WIDTH = 40;
 const COLUMN_MAX_HEIGHT = 150;
 
-const PLAYER_COLOR = `rgba(255, 0, 0, 1)`;
-const DEFAULT_COLOR = `rgba(2, 14, 134, 1)`;
+const PLAYER_COLOR = `hsla(0, 100%, 50%, 1)`;
+const DEFAULT_COLOR = `hsla(235, 97%, 27%, 1)`;
 const TEXT_HEADING = `Ура вы победили!`;
 const TEXT_SUBHEADING = `Список результатов:`;
 
@@ -32,7 +32,7 @@ let getColors = (length) => {
   let colors = [];
   colors.push(PLAYER_COLOR);
   for (let i = 0; i < length - 1; i++) {
-    let color = DEFAULT_COLOR.slice(0, -2) + Math.random().toFixed(1) + `)`;
+    let color = DEFAULT_COLOR.slice(0, -12) + (Math.random() * 100).toFixed(0) + `%, 27%, 1)`;
     colors.push(color);
   }
   return colors;
@@ -125,11 +125,12 @@ let renderTimes = (ctx, x, y, times, font) => {
 };
 
 window.renderStatistics = (ctx, names, times) => {
-  const playerIndex = getPlayerIndex(names);
+  const PLAYER_INDEX = getPlayerIndex(names);
+
   let colors = getColors(names.length);
 
-  swapElements(0, playerIndex, times);
-  swapElements(0, playerIndex, names);
+  swapElements(0, PLAYER_INDEX, times);
+  swapElements(0, PLAYER_INDEX, names);
 
   let columnHeightPx = getColumnHeightPx(times);
   let columnX = getColumnX(times);
