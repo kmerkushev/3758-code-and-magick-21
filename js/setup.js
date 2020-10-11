@@ -1,10 +1,10 @@
 "use strict";
 
 const NUMBER_CHARACTERS = 4;
-const names = [`Иван`, `Хуан`, `Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
-const surnames = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
-const coatColors = [`rgb(101, 137, 164)`, `rgb(241, 43, 107)`, `rgb(146, 100, 161)`, `rgb(56, 159, 117)`, `rgb(215, 210, 55)`, `rgb(0, 0, 0)`];
-const eyesColors = [`black`, `red`, `blue`, `yellow`, `green`];
+const NAMES = [`Иван`, `Хуан`, `Себастьян`, `Мария`, `Кристоф`, `Виктор`, `Юлия`, `Люпита`, `Вашингтон`];
+const SURNAMES = [`да Марья`, `Верон`, `Мирабелла`, `Вальц`, `Онопко`, `Топольницкая`, `Нионго`, `Ирвинг`];
+const COAT_COLORS = [`rgb(101, 137, 164)`, `rgb(241, 43, 107)`, `rgb(146, 100, 161)`, `rgb(56, 159, 117)`, `rgb(215, 210, 55)`, `rgb(0, 0, 0)`];
+const EYES_COLORS = [`black`, `red`, `blue`, `yellow`, `green`];
 
 let removeHidden = (className) => {
   document.querySelector(`.` + className).classList.remove(`hidden`);
@@ -24,7 +24,7 @@ let getName = (arrayOfNames, arrayOfSurnames, isReverse) => {
 
 let getCharacter = (arrayOfCoatColors, arrayOfEyesColors) => {
   return {
-    name: getName(names, surnames),
+    name: getName(NAMES, SURNAMES),
     coatColor: arrayOfCoatColors[getRandomInt(0, NUMBER_CHARACTERS)],
     eyesColor: arrayOfEyesColors[getRandomInt(0, NUMBER_CHARACTERS)]
   };
@@ -33,7 +33,7 @@ let getCharacter = (arrayOfCoatColors, arrayOfEyesColors) => {
 let getCharacters = (numberCharacters) => {
   let characters = [];
   for (let i = 0; i < numberCharacters; i++) {
-    characters.push(getCharacter(coatColors, eyesColors));
+    characters.push(getCharacter(COAT_COLORS, EYES_COLORS));
   }
   return characters;
 };
