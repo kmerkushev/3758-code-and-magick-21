@@ -12,11 +12,11 @@ let removeHidden = (className) => {
 
 removeHidden(`setup`);
 
-function getRandomInt(min, max) {
+let getRandomInt = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min; /* Максимум не включается, минимум включается*/
-}
+};
 
 let getName = (arrayOfNames, arrayOfSurnames, isReverse) => {
   return isReverse ? arrayOfSurnames[getRandomInt(0, NUMBER_CHARACTERS)] + ` ` + arrayOfNames[getRandomInt(0, NUMBER_CHARACTERS)] : arrayOfNames[getRandomInt(0, NUMBER_CHARACTERS)] + ` ` + arrayOfSurnames[getRandomInt(0, NUMBER_CHARACTERS)];
