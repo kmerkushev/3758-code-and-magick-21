@@ -19,22 +19,15 @@ function getRandomInt(min, max) {
 }
 
 let getName = (arrayOfNames, arrayOfSurnames, isReverse) => {
-  let characterName = ``;
-  if (isReverse) {
-    characterName = arrayOfSurnames[getRandomInt(0, NUMBER_CHARACTERS)] + ` ` + arrayOfNames[getRandomInt(0, NUMBER_CHARACTERS)];
-  } else {
-    characterName = arrayOfNames[getRandomInt(0, NUMBER_CHARACTERS)] + ` ` + arrayOfSurnames[getRandomInt(0, NUMBER_CHARACTERS)];
-  }
-  return characterName;
+  return isReverse ? arrayOfSurnames[getRandomInt(0, NUMBER_CHARACTERS)] + ` ` + arrayOfNames[getRandomInt(0, NUMBER_CHARACTERS)] : arrayOfNames[getRandomInt(0, NUMBER_CHARACTERS)] + ` ` + arrayOfSurnames[getRandomInt(0, NUMBER_CHARACTERS)];
 };
 
 let getCharacter = (arrayOfCoatColors, arrayOfEyesColors) => {
-  let character = {
+  return {
     name: getName(names, surnames),
     coatColor: arrayOfCoatColors[getRandomInt(0, NUMBER_CHARACTERS)],
     eyesColor: arrayOfEyesColors[getRandomInt(0, NUMBER_CHARACTERS)]
   };
-  return character;
 };
 
 let getCharacters = (numberCharacters) => {
