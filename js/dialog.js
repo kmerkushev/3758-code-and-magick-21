@@ -10,6 +10,8 @@
   let userNameInputIsFocused = false;
   let uploadBtn = setup.querySelector(`.upload`);
 
+  let form = document.querySelector(`.setup-wizard-form`);
+
   let onPopupEscPress = (evt) => {
     if ((evt.key === `Escape`) && (!userNameInputIsFocused)) {
       evt.preventDefault();
@@ -19,6 +21,7 @@
 
   let openPopup = () => {
     window.util.show(setup);
+    window.load(onLoadGet, onError);
     document.addEventListener(`keydown`, onPopupEscPress);
   };
 
@@ -47,6 +50,31 @@
     if (evt.key === `Enter`) {
       openPopup();
     }
+  });
+
+  let onLoadGet = (response) => {
+    window.similar.render(response);
+  };
+
+  let onLoadPost = () => {
+    closePopup();
+  };
+
+  let onError = (errorMessage) => {
+    let node = document.createElement('div');
+    node.style = 'z-index: 100; margin: 0 auto; text-align: center; background-color: red;';
+    node.style.position = 'absolute';
+    node.style.left = 0;
+    node.style.right = 0;
+    node.style.fontSize = '30px';
+
+    node.textContent = errorMessage;
+    document.body.insertAdjacentElement('afterbegin', node);
+  };
+
+  form.addEventListener(`submit`, (evt) => {
+    evt.preventDefault();
+    window.save(new FormData(form), onLoadPost, onError);
   });
 
   setupSubmit.addEventListener(`keydown`, (evt) => {
@@ -123,4 +151,5 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
+  openPopup();
 })();
